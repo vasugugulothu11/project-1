@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EMI Calculator</title>
+    <style>
+        body {
+            background-image: url("https://images.unsplash.com/photo-1554224155-6726b3ff858f");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            text-shadow: 1px 1px 3px black;
+        }
+        h1 {
+            color: white;
+        }
+        input, button {
+            margin: 5px 0;
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>EMI Calculator</h1>
+
+    <p>Enter the loan amount:</p>
+    <input type="number" id="loan" placeholder="e.g. 500000"><br>
+
+    <p>Enter the time (in years):</p>
+    <input type="number" id="time" placeholder="e.g. 5"><br>
+
+    <p>Enter the rate of interest (% per year):</p>
+    <input type="number" id="rate" placeholder="e.g. 8"><br>
+
+    <button onclick="calculateEMI()">Calculate</button>
+
+    <p>You have to pay EMI per month:</p>
+    <p id="result"></p>
+
+    <script>
+        function calculateEMI() {
+            let P = parseFloat(document.getElementById("loan").value);
+            let T = parseFloat(document.getElementById("time").value);
+            let R = parseFloat(document.getElementById("rate").value);
+
+            if (isNaN(P) || isNaN(T) || isNaN(R) || P <= 0 || T <= 0 || R < 0) {
+                document.getElementById("result").innerHTML = "Please enter valid values.";
+                return;
+            }
+
+            let monthlyRate = R / (12 * 100);
+            let months = T * 12;
+            let EMI;
+
+            if (monthlyRate === 0) {
+                EMI = P / months;
+            } else {
+                EMI = (P * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+                      (Math.pow(1 + monthlyRate, months) - 1);
+            }
+
+            document.getElementById("result").innerHTML = "₹ " + EMI.toFixed(2);
+        }
+    </script>
+</body>
+</html>
